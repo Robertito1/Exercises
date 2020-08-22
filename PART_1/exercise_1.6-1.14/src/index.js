@@ -24,7 +24,7 @@ const Statistics = (props) => {
       <h1>Statistics</h1>
       <Statistic text='Good' value={props.good} />
       <Statistic text='Neutral' value={props.neutral} />
-      <Statistic text='Bad' value={props.bad} />
+      <Statistic text='Bad' value={props.bad} />n
       <Statistic text='All' value={props.total} />
       <Statistic text='Average' value={props.average} />
       <Statistic text='Positive' value={`${props.postivePercentage}%`} />
