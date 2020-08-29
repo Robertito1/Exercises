@@ -1,4 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+
+const FilterNames = ({ onInput, value }) => {
+
+  return (
+    <div>
+      <span>search</span> <input onChange={onInput} value={value} />
+    </div>
+  )
+}
 
 const NewPersonForm = ({ addPerson, newName, inputName, inputPhone, newPhone }) => {
 
@@ -8,7 +18,7 @@ const NewPersonForm = ({ addPerson, newName, inputName, inputPhone, newPhone }) 
       <div>
         name: <input
           value={newName}
-          onChange={inputName} />
+          onChange={inputName} /> <br />
           phone-number:  <input
           value={newPhone}
           onChange={inputPhone} />
@@ -20,12 +30,13 @@ const NewPersonForm = ({ addPerson, newName, inputName, inputPhone, newPhone }) 
   )
 }
 
+
 const Persons = ({ persons }) => {
   return (
     <div>
       <h2>Numbers</h2>
       {
-        persons.map(person => <div key={person.id}>{person.name} : {person.phone}</div>)
+        persons.map(person => <div key={person.id}>{person.name} : {person.number}</div>)
       }
     </div>
   )
@@ -33,43 +44,62 @@ const Persons = ({ persons }) => {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', phone: 345235812, id: 1 }
-  ])
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
+  const [shown, setShown] = useState('')
 
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/persons').then(response => {
+        setPersons(response.data)
+      })
+  }, [])
 
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
-      phone: newPhone,
+      number: newPhone,
       id: persons.length + 1,
     }
 
-    setPersons(persons.concat(personObject))
+    const checkForUniqueness = persons.find(person => person.name === personObject.name)
+    if (checkForUniqueness) {
+      alert(`${personObject.name} already exists in the phonebook`)
+    } else {
+      setPersons(persons.concat(personObject))
+    }
     setNewName('')
     setNewPhone('')
-
   }
 
   const handleNameInputChange = (e) => {
     setNewName(e.target.value)
   }
+
   const handlePhoneInputChange = (e) => {
     setNewPhone(e.target.value)
   }
+
+  const handleFilter = (e) => {
+    setShown(e.target.value.toLowerCase())
+  }
+
+  const personsToShow = shown.length === 0 ? persons : persons.filter(person => person.name.toLowerCase().includes(shown))
+
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <FilterNames onInput={handleFilter} value={shown} />
       <NewPersonForm addPerson={addPerson}
         inputName={handleNameInputChange}
         inputPhone={handlePhoneInputChange}
         newName={newName}
         newPhone={newPhone}
       />
-      <Persons persons={persons} />
+      <Persons persons={personsToShow} />
     </div>
   )
 }
