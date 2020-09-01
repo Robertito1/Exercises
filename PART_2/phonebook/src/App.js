@@ -1,57 +1,23 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
-const FilterNames = ({ onInput, value }) => {
-
-  return (
-    <div>
-      <span>search</span> <input onChange={onInput} value={value} />
-    </div>
-  )
-}
-
-const NewPersonForm = ({ addPerson, newName, inputName, inputPhone, newPhone }) => {
+import personService from './services/persons'
+import Person from './components/Person'
+import NewPersonForm from './components/NewPersonForm'
+import FilterNames from './components/FilterNames'
+import Notification from './components/Notification'
 
 
-  return (
-    <form onSubmit={addPerson}>
-      <div>
-        name: <input
-          value={newName}
-          onChange={inputName} /> <br />
-          phone-number:  <input
-          value={newPhone}
-          onChange={inputPhone} />
-      </div>
-      <div>
-        <button type="submit">add</button>
-      </div>
-    </form>
-  )
-}
-
-
-const Persons = ({ persons }) => {
-  return (
-    <div>
-      <h2>Numbers</h2>
-      {
-        persons.map(person => <div key={person.id}>{person.name} : {person.number}</div>)
-      }
-    </div>
-  )
-
-}
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [shown, setShown] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState(null)
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons').then(response => {
+    personService
+      .getPersons()
+      .then(response => {
         setPersons(response.data)
       })
   }, [])
@@ -64,15 +30,40 @@ const App = () => {
       id: persons.length + 1,
     }
 
-    const checkForUniqueness = persons.find(person => person.name === personObject.name)
-    if (checkForUniqueness) {
-      alert(`${personObject.name} already exists in the phonebook`)
+    const duplicateName = persons.find(person => person.name === personObject.name)
+    if (duplicateName) {
+      const id = duplicateName.id
+      personService
+        .updatePerson({ ...duplicateName, number: personObject.number }, personObject.name, id)
+        .then(response => {
+          setPersons(persons.map(person => person.id !== id ? person : response.data))
+          setNotificationMessage(`${personObject.name}'s Number Updated Successfully`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 3000)
+          setNewName('')
+          setNewPhone('')
+        })
+    } else if (!personObject.name) {
+      alert('namespace is empty')
     } else {
       setPersons(persons.concat(personObject))
+      personService
+        .createPerson(personObject)
+        .then(response => {
+          console.log(response)
+        })
+      setNotificationMessage(
+        `'${personObject.name}' was added to the phonebook `
+      )
+      setTimeout(() => {
+        setNotificationMessage(null)
+      }, 3000)
+      setNewName('')
+      setNewPhone('')
     }
-    setNewName('')
-    setNewPhone('')
   }
+
 
   const handleNameInputChange = (e) => {
     setNewName(e.target.value)
@@ -88,10 +79,17 @@ const App = () => {
 
   const personsToShow = shown.length === 0 ? persons : persons.filter(person => person.name.toLowerCase().includes(shown))
 
+  const handleDeleteOf = (id, name) => {
+    personService
+      .deletePerson(id, name)
+    console.log(`deleted ${id}`)
+
+  }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      {notificationMessage === null ? null : <Notification message={notificationMessage} />}
       <FilterNames onInput={handleFilter} value={shown} />
       <NewPersonForm addPerson={addPerson}
         inputName={handleNameInputChange}
@@ -99,9 +97,37 @@ const App = () => {
         newName={newName}
         newPhone={newPhone}
       />
-      <Persons persons={personsToShow} />
+
+      {
+        personsToShow.map((person, i) =>
+          <Person key={i}
+            person={person}
+            handleDelete={() => handleDeleteOf(person.id, person.name)}
+          />)
+      }
     </div>
   )
 }
 
 export default App
+
+// { 
+//   "name": "Arto Hellas", 
+//   "number": "040-123456",
+//   "id": 1
+// },
+// { 
+//   "name": "Ada Lovelace", 
+//   "number": "39-44-5323523",
+//   "id": 2
+// },
+// { 
+//   "name": "Dan Abramov", 
+//   "number": "12-43-234345",
+//   "id": 3
+// },
+// { 
+//   "name": "Mary Poppendieck", 
+//   "number": "39-23-6423122",
+//   "id": 4
+// }

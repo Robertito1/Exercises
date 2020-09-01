@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react'; REFACTOR THE CODE FROM BEGINNING AND USE DIFFERENT COMPONENTS
 import axios from 'axios'
 
 const FilteredCountries = ({ onInputChange, toShow, filtered }) => {
@@ -16,6 +16,7 @@ function App() {
   const [names, setNames] = useState([])
   const [toShow, setToShow] = useState('')
   const [displayCountryDetails, setDisplayCountryDetails] = useState(false)
+  const [weatherInformation, setWeatherinformation] = useState([])
 
   useEffect(() => {
     console.log('effect')
@@ -27,30 +28,45 @@ function App() {
       })
   }, [])
 
+
+
+
   const showCountryDetails = (e) => {
     setDisplayCountryDetails(!displayCountryDetails)
-    console.log(e.target.parentNode)
   }
 
   const filterCountries = (e) => {
     setToShow(e.target.value.toLowerCase())
-  }
 
+  }
+  const api_key = process.env.REACT_APP_API_KEY
   let filtered = toShow === '' ? 'search' : names.filter(nation => nation.name.toLowerCase().includes(toShow))
 
-  const countryDetail = !displayCountryDetails ? '' : <div>Country Details</div>
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get(`http://api.weatherstack.com/current?access_key=${api_key}&query={country.capital}`)
+      .then(response => {
+        console.log('promise fulfilled')
+        setWeatherinformation(response.data)
+        console.log(response.data)
+      })
+  }, [])
 
   if (filtered === 'search') {
-    filtered = 'search'
+    filtered = 'search for countries'
   } else if (filtered.length > 10) {
-    filtered = 'search more'
-  } else if (filtered.length < 10 && filtered.length > 2) {
+    filtered = 'input a more specific search'
+  } else if (filtered.length < 10 && filtered.length >= 2 && displayCountryDetails === false) {
     filtered = filtered.map(country =>
       <div id={country.name} key={country.name}>
-        {countryDetail}
         {country.name}<button id={country.name} onClick={showCountryDetails}>show</button>
       </div>)
+  } else if (filtered.length < 10 && filtered.length >= 2 && displayCountryDetails === true) {
+    filtered = <h1>country <button onClick={() => setDisplayCountryDetails(false)}>hide</button></h1>
   } else {
+
     filtered = filtered.map(country =>
       <div key={country.name}>
         <h1>{country.name}</h1>
@@ -59,6 +75,8 @@ function App() {
         <h3>languages</h3>
         <ul>{country.languages.map(language => <li>{language.name}</li>)}</ul>
         <img src={country.flag} alt='flag' />
+        <h1>Weather in {country.capital}</h1>
+        <p>{weatherInformation.request.type}</p>
       </div>)
   }
 
