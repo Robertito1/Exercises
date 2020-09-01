@@ -82,8 +82,7 @@ const App = () => {
   const handleDeleteOf = (id, name) => {
     personService
       .deletePerson(id, name)
-    console.log(`deleted ${id}`)
-
+    // setPersons(persons.map(person => person.id === id ? null : person))
   }
 
   return (

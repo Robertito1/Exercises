@@ -12,7 +12,11 @@ const createPerson = newObject => {
 const deletePerson = (id, name) => {
     if (window.confirm(`Delete ${name} ?`)) {
         return axios.delete(`${baseUrl}/${id}`)
+            .then(response => {
+                console.log(response.data)
+            })
     }
+
 }
 
 const updatePerson = (objectUpdate, name, id) => {
