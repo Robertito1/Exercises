@@ -1,92 +1,67 @@
-// import React, { useState, useEffect } from 'react'; REFACTOR THE CODE FROM BEGINNING AND USE DIFFERENT COMPONENTS
+import React, { useState, useEffect } from 'react';
+
+import Search from './components/Search'
+import Country from './components/Country'
+
 import axios from 'axios'
 
-const FilteredCountries = ({ onInputChange, toShow, filtered }) => {
-  return (
-    <div>
-      <input onChange={onInputChange} value={toShow} />
-      <div>{
-        filtered
-      }</div>
-    </div>
-  )
-}
+
+
+
+
 function App() {
 
-  const [names, setNames] = useState([])
-  const [toShow, setToShow] = useState('')
-  const [displayCountryDetails, setDisplayCountryDetails] = useState(false)
-  const [weatherInformation, setWeatherinformation] = useState([])
-
-  useEffect(() => {
-    console.log('effect')
-    axios
-      .get('https://restcountries.eu/rest/v2/all')
-      .then(response => {
-        console.log('promise fulfilled')
-        setNames(response.data)
-      })
-  }, [])
+    const [nations, setNations] = useState([])
+    const [userInputValue, setUserInputValue] = useState('')
+    let filtered = userInputValue === '' ? null : nations.filter(nation => nation.name.toLowerCase().includes(userInputValue))
 
 
+    useEffect(() => {
+        console.log('effect')
+        axios
+            .get('https://restcountries.eu/rest/v2/all')
+            .then(response => {
+                console.log('promise fulfilled')
+                setNations(response.data)
+            })
+    }, [])
+
+    const handleFilterCountries = (e) => {
+        setUserInputValue(e.target.value.toLowerCase())
+    }
 
 
-  const showCountryDetails = (e) => {
-    setDisplayCountryDetails(!displayCountryDetails)
-  }
-
-  const filterCountries = (e) => {
-    setToShow(e.target.value.toLowerCase())
-
-  }
-  const api_key = process.env.REACT_APP_API_KEY
-  let filtered = toShow === '' ? 'search' : names.filter(nation => nation.name.toLowerCase().includes(toShow))
-
-
-  useEffect(() => {
-    console.log('effect')
-    axios
-      .get(`http://api.weatherstack.com/current?access_key=${api_key}&query={country.capital}`)
-      .then(response => {
-        console.log('promise fulfilled')
-        setWeatherinformation(response.data)
-        console.log(response.data)
-      })
-  }, [])
-
-  if (filtered === 'search') {
-    filtered = 'search for countries'
-  } else if (filtered.length > 10) {
-    filtered = 'input a more specific search'
-  } else if (filtered.length < 10 && filtered.length >= 2 && displayCountryDetails === false) {
-    filtered = filtered.map(country =>
-      <div id={country.name} key={country.name}>
-        {country.name}<button id={country.name} onClick={showCountryDetails}>show</button>
-      </div>)
-  } else if (filtered.length < 10 && filtered.length >= 2 && displayCountryDetails === true) {
-    filtered = <h1>country <button onClick={() => setDisplayCountryDetails(false)}>hide</button></h1>
-  } else {
-
-    filtered = filtered.map(country =>
-      <div key={country.name}>
-        <h1>{country.name}</h1>
-        <p>capital {country.capital}</p>
-        <p>population {country.population}</p>
-        <h3>languages</h3>
-        <ul>{country.languages.map(language => <li>{language.name}</li>)}</ul>
-        <img src={country.flag} alt='flag' />
-        <h1>Weather in {country.capital}</h1>
-        <p>{weatherInformation.request.type}</p>
-      </div>)
-  }
-
-  const header = 'welcome'
-  return (
-    <div className="App">
-      <h1>{header}</h1>
-      <FilteredCountries onInputChange={filterCountries} toShow={toShow} filtered={filtered} />
-    </div>
-  );
+    const renderNations = () => {
+        if (filtered === null) {
+            return <p>input search</p>
+        } else if (filtered.length > 10) {
+            return <p>Too many results</p>
+        }
+        else if (filtered.length <= 10 && filtered.length >= 2) {
+            return filtered = <div>{filtered.map(country => <Country key={country.name} country={country} />)}</div>
+        } else if (filtered.length === 1) {
+            return <div>
+                <h1>{filtered[0].name}</h1>
+                <p>capital {filtered[0].capital}</p>
+                <p>population {filtered[0].population}</p>
+                <h3>languages</h3>
+                <ul>{filtered[0].languages.map(language => <li>{language.name}</li>)}</ul>
+                <img src={filtered[0].flag} alt='flag' />
+            </div>
+        } else {
+            return <p>try a different input</p>
+        }
+    }
+    return (
+        <div>
+            <h1>Hello World</h1>
+            <Search filterCountries={handleFilterCountries}
+                searchInputValue={userInputValue} />
+            {renderNations()}
+        </div>
+    )
 }
 
 export default App;
+
+
