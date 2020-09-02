@@ -4,6 +4,7 @@ import Search from './components/Search'
 import Country from './components/Country'
 
 import axios from 'axios'
+import SearchMatch from './components/SearchMatch';
 
 
 
@@ -16,6 +17,11 @@ function App() {
     let filtered = userInputValue === '' ? null : nations.filter(nation => nation.name.toLowerCase().includes(userInputValue))
 
 
+    // http://api.weatherstack.com/current
+    // ? access_key = api_key
+    // & query = ;Singapur;Shanghai
+
+
     useEffect(() => {
         console.log('effect')
         axios
@@ -25,6 +31,9 @@ function App() {
                 setNations(response.data)
             })
     }, [])
+
+
+
 
     const handleFilterCountries = (e) => {
         setUserInputValue(e.target.value.toLowerCase())
@@ -40,14 +49,7 @@ function App() {
         else if (filtered.length <= 10 && filtered.length >= 2) {
             return filtered = <div>{filtered.map(country => <Country key={country.name} country={country} />)}</div>
         } else if (filtered.length === 1) {
-            return <div>
-                <h1>{filtered[0].name}</h1>
-                <p>capital {filtered[0].capital}</p>
-                <p>population {filtered[0].population}</p>
-                <h3>languages</h3>
-                <ul>{filtered[0].languages.map(language => <li>{language.name}</li>)}</ul>
-                <img src={filtered[0].flag} alt='flag' />
-            </div>
+            return filtered = <div>{filtered.map(country => <SearchMatch country={country} />)}</div>
         } else {
             return <p>try a different input</p>
         }
