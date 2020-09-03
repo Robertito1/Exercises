@@ -6,10 +6,11 @@ const NewPersonForm = ({ addPerson, newName, inputName, inputPhone, newPhone }) 
     return (
         <form onSubmit={addPerson}>
             <div>
+                <h1>Add a new</h1>
                 name: <input
                     value={newName}
                     onChange={inputName} /> <br />
-            phone-number:  <input
+                number: <input
                     value={newPhone}
                     onChange={inputPhone} />
             </div>
