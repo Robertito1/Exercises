@@ -9,36 +9,33 @@ const Country = ({ country }) => {
 
 
     useEffect(() => {
-        console.log('effect')
         axios
             .get(`http://api.weatherstack.com/current?access_key=${api_key}&query=${country.capital}`)
             .then(response => {
-                console.log('weather')
                 setWeatherInformation(response.data)
-                console.log(response.data)
             })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const toggleDetailsDisplay = () => {
         setShowDetails(!showDetails)
-        console.log(country.name, showDetails)
     }
 
 
     return (
         <React.Fragment>
             {showDetails ? <div>
-                <h1>{country.name}</h1>
+                <h1>{country.name} <span><button onClick={toggleDetailsDisplay}>hide</button></span></h1>
                 <p>capital {country.capital}</p>
                 <p>population {country.population}</p>
-                <h3>languages</h3>
+                <h3>spoken languages</h3>
                 <ul>{country.languages.map((language, i) => <li key={i}>{language.name}</li>)}</ul>
-                <img src={country.flag} alt='flag' />
+                <img src={country.flag} alt='flag' style={{ width: "100px", height: "100px" }} />
                 <h2>{`Weather in ${country.capital}`}</h2>
                 <p>Teamperature :{weatherInformation.current.temperature}</p>
                 <img src={weatherInformation.current.weather_icons[0]} alt='atlernate' />
                 <p>Wind :{`${weatherInformation.current.wind_speed} mph direction ${weatherInformation.current.wind_dir}`}</p>
-                <button onClick={toggleDetailsDisplay}>hide</button>
+
             </div> :
                 <div>
                     <span>{country.name}</span>

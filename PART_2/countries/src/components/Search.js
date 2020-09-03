@@ -1,8 +1,9 @@
 import React from 'react'
 
 const Search = ({ filterCountries, searchInputValue }) => {
-    return (
+    return (<div>
         <input onChange={filterCountries} value={searchInputValue} />
+    </div>
     )
 }
 
