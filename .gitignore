@@ -4,5 +4,6 @@
 /PART_2/courseinfo2/node_modules
 /PART_2/phonebook/node_modules
 /PART_2/countries/node_modules
-
-  
+/PART_3/phonebook/backend/node_modules
+/PART_3/phonebook/frontend/node_modules
+notes.md
