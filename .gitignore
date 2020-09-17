@@ -7,6 +7,7 @@
 /PART_3/phonebook/backend/node_modules
 /PART_3/phonebook/frontend/node_modules
 /PART_3/phonebook/backend/.env
+/PART_4/bloglist/.env
 /PART_4/bloglist/node_modules
 
 notes.md
