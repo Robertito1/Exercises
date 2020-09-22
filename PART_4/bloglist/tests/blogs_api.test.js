@@ -113,6 +113,19 @@ describe("Testing scenerios for POST when", () => {
       .expect("Content-Type", /application\/json/);
   });
 });
+describe("deletion of a blog", () => {
+  test("succeeds with status code 204 if id is valid", async () => {
+    const response = await api.get("/api/blogs");
+
+    const blogToDelete = response.body[0];
+
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    const blogsAtEnd = await Blog.find({});
+    expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1);
+    const titles = blogsAtEnd.map((r) => r.title);
+    expect(titles).not.toContain(blogToDelete.title);
+  });
+});
 
 afterAll(() => {
   mongoose.connection.close();
