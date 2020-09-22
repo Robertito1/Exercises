@@ -100,6 +100,18 @@ describe("Testing scenerios for POST when", () => {
 
     expect(newlyCreated.likes).toBe(0);
   });
+
+  test("no title and url property is included with the request, a status of 400 is returned", async () => {
+    const newBlog = {
+      author: "jonny depp",
+      likes: 5,
+    };
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+  });
 });
 
 afterAll(() => {

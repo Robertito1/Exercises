@@ -30,7 +30,6 @@ blogsRouter.post("/", async (request, response, next) => {
   });
 
   try {
-    console.log("try working");
     const savedBlog = await blog.save();
     response.json(savedBlog);
   } catch (error) {
