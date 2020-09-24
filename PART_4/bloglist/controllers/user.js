@@ -4,14 +4,18 @@ const User = require("../models/user");
 
 usersRouter.get("/", async (request, response) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).populate("blogs", {
+      url: 1,
+      title: 1,
+      author: 1,
+    });
     response.send(users);
   } catch (error) {
     next(error);
   }
 });
 
-usersRouter.post("/", async (request, response) => {
+usersRouter.post("/", async (request, response, next) => {
   const body = request.body;
 
   const saltRounds = 10;
@@ -22,11 +26,17 @@ usersRouter.post("/", async (request, response) => {
     passwordHash,
   });
   try {
-    const savedUser = await user.save();
-    response.json(savedUser);
+    if (body.password.length < 3) {
+      return response
+        .status(400)
+        .json({ error: "password should be longer than 3" });
+    } else {
+      const savedUser = await user.save();
+      return response.json(savedUser);
+    }
   } catch (error) {
-    next(error);
     console.log("catch working");
+    next(error);
   }
 });
 

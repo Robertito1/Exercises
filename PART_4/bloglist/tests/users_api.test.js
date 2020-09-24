@@ -38,7 +38,48 @@ describe("when there is initially one user in db", () => {
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1);
 
     const usernames = usersAtEnd.map((u) => u.username);
-    expect(usernames).toContain(newUser.username);
+    expect(usernames).toContainEqual(newUser.username);
+  });
+  test("adding an already existing username fails", async () => {
+    const newUser = {
+      username: "root",
+      name: "Matti Luukkainen",
+      password: "salainen",
+    };
+    await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(async () => {
+      await api
+        .post("/api/users")
+        .send(newUser)
+        .toThrow(
+          "User validation failed: username: Error, expected `username` to be unique. Value: `root`"
+        );
+    });
+  });
+
+  test("using a password shorter than 3 characters fails", async () => {
+    const newUser = {
+      username: "Instructor",
+      name: "Obama Barrack",
+      password: "sa",
+    };
+    await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(async () => {
+      await api
+        .post("/api/users")
+        .send(newUser)
+        .toThrow("password should be longer than 3");
+    });
   });
 });
 
