@@ -1,9 +1,7 @@
 const list_helper = require("../utils/list_helper");
 
-describe("favourite blog", () => {
-  const emptyBlogs = [];
-
-  const singleMostLiked = [
+describe("Author with most Blog", () => {
+  const arrayOfBlogs = [
     {
       _id: "5a422a851b54a676234d17f7",
       title: "React patterns",
@@ -48,12 +46,8 @@ describe("favourite blog", () => {
     },
   ];
 
-  test("to return a string if there are no blogs", () => {
-    expect(list_helper.favoriteBlog(emptyBlogs)).toBe("there are no blogs yet");
-  });
-
-  test("when there is a single blog with the most likes", () => {
-    expect(list_helper.favoriteBlog(singleMostLiked)).toMatchObject({
+  test("returns the author with most blogs", () => {
+    expect(list_helper.mostBlog(arrayOfBlogs)).toMatchObject({
       _id: "5a422b3a1b54a676234d17f9",
       title: "Canonical string reduction",
       author: "Edsger W. Dijkstra",

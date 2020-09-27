@@ -21,6 +21,7 @@ const initialBlogs = [
 ];
 
 beforeEach(async () => {
+  jest.useFakeTimers();
   await Blog.deleteMany({});
 
   let blogObject = new Blog(initialBlogs[0]);
@@ -69,7 +70,7 @@ describe("Testing scenerios for POST when", () => {
       .post("/api/login")
       .send({ username: "root", password: "sekret" })
       .expect(200);
-    const token = await login.body.token;
+    const token = login.body.token;
 
     await api
       .post("/api/blogs")
@@ -97,7 +98,7 @@ describe("Testing scenerios for POST when", () => {
       .post("/api/login")
       .send({ username: "root", password: "sekret" })
       .expect(200);
-    const token = await login.body.token;
+    const token = login.body.token;
 
     await api
       .post("/api/blogs")
@@ -125,13 +126,28 @@ describe("Testing scenerios for POST when", () => {
       .post("/api/login")
       .send({ username: "root", password: "sekret" })
       .expect(200);
-    const token = await login.body.token;
+    const token = login.body.token;
 
     await api
       .post("/api/blogs")
       .set("Authorization", `bearer ${token}`)
       .send(newBlog)
       .expect(400)
+      .expect("Content-Type", /application\/json/);
+  });
+
+  test("no token is Provided, a status of 400 Unauthorized and failed request is returned ", async () => {
+    const newBlog = {
+      title: "Die Hard",
+      url: "https://hollywood.movie/",
+      author: "bruce willis",
+      likes: 5,
+    };
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(401)
       .expect("Content-Type", /application\/json/);
   });
 });
@@ -141,7 +157,7 @@ describe("deletion of a blog", () => {
 
     const blogToDelete = response.body[0];
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+    await api.delete(`/api/blogs/${blogToDelete._id}`).expect(204);
     const blogsAtEnd = await Blog.find({});
     expect(blogsAtEnd).toHaveLength(initialBlogs.length - 1);
     const titles = blogsAtEnd.map((r) => r.title);
