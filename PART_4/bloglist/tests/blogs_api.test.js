@@ -65,8 +65,15 @@ describe("Testing scenerios for POST when", () => {
       likes: 1000000,
     };
 
+    const login = await api
+      .post("/api/login")
+      .send({ username: "root", password: "sekret" })
+      .expect(200);
+    const token = await login.body.token;
+
     await api
       .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
       .send(newBlog)
       .expect(200)
       .expect("Content-Type", /application\/json/);
@@ -86,8 +93,15 @@ describe("Testing scenerios for POST when", () => {
       url: "https://womenwhosulk.toBeMade/",
     };
 
+    const login = await api
+      .post("/api/login")
+      .send({ username: "root", password: "sekret" })
+      .expect(200);
+    const token = await login.body.token;
+
     await api
       .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
       .send(newBlog)
       .expect(200)
       .expect("Content-Type", /application\/json/);
@@ -106,8 +120,16 @@ describe("Testing scenerios for POST when", () => {
       author: "jonny depp",
       likes: 5,
     };
+
+    const login = await api
+      .post("/api/login")
+      .send({ username: "root", password: "sekret" })
+      .expect(200);
+    const token = await login.body.token;
+
     await api
       .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
       .send(newBlog)
       .expect(400)
       .expect("Content-Type", /application\/json/);
