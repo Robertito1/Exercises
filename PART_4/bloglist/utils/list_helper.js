@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const dummy = (blogs) => {
   if (blogs) {
     return 1;
@@ -18,6 +20,7 @@ const favoriteBlog = (arrayOfBlogs) => {
   if (arrayOfBlogs.length === 0) {
     return "there are no blogs yet";
   }
+  console.log(arrayOfBlogs);
   const likesArray = arrayOfBlogs.map((blog) => blog.likes);
   console.log("likesArray", likesArray);
   const higestValue = Math.max(...likesArray);
@@ -27,9 +30,16 @@ const favoriteBlog = (arrayOfBlogs) => {
   );
   return favorite;
 };
+
+const mostBlogs = (arrayOfBlogs) => {
+  const element = _.maxBy(arrayOfBlogs, "author");
+  console.log(element);
+  return element;
+};
 module.exports = {
   dummy,
   totalLikes,
   reducer,
   favoriteBlog,
+  mostBlogs,
 };

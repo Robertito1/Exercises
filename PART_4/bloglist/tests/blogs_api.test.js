@@ -21,7 +21,6 @@ const initialBlogs = [
 ];
 
 beforeEach(async () => {
-  jest.useFakeTimers();
   await Blog.deleteMany({});
 
   let blogObject = new Blog(initialBlogs[0]);
