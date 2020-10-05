@@ -9,5 +9,5 @@
 /PART_3/phonebook/backend/.env
 /PART_4/bloglist/.env
 /PART_4/bloglist/node_modules
-
+/PART_5/bloglist/frontend/node_modules
 notes.md
