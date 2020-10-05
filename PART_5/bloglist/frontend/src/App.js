@@ -18,7 +18,7 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
-      // noteService.setToken(user.token)
+      blogService.setToken(user.token);
     }
   }, []);
 
@@ -29,6 +29,7 @@ const App = () => {
         username,
         password,
       });
+      blogService.setToken(user.token);
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       setUser(user);
       console.log(user);
@@ -75,13 +76,33 @@ const App = () => {
   };
   const blogForm = () => {
     return (
-      <form>
-        <input
-        // value={newBlog}
-        // onChange={handleBlogChange} onSubmit={addBlog}
-        />
-        <button type="submit">save</button>
-      </form>
+      <div>
+        <h2>Create New</h2>
+        <form>
+          <div>
+            title:
+            <input
+            // value={newBlog}
+            // onChange={handleBlogChange} onSubmit={addBlog}
+            />
+          </div>
+          <div>
+            author:
+            <input
+            // value={newBlog}
+            // onChange={handleBlogChange}
+            />
+          </div>
+          <div>
+            url:
+            <input
+            // value={newBlog}
+            // onChange={handleBlogChange} }
+            />
+          </div>
+          <button type="submit">save</button>
+        </form>
+      </div>
     );
   };
   return (
@@ -96,13 +117,13 @@ const App = () => {
             </span>
           </p>
           {blogForm()}
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
         </div>
       ) : (
         loginForm()
       )}
-      {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
-      ))}
     </div>
   );
 };
