@@ -2,12 +2,18 @@ import React, { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Notification from "./components/notification/Notification";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+  const [newAuthor, setNewAuthor] = useState("");
+  const [newUrl, setNewUrl] = useState("");
   const [user, setUser] = useState(null);
+  const [notificationMessage, setNotificationMessage] = useState(null);
+  const [notificationStatus, setNotificationStatus] = useState(true);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -22,6 +28,27 @@ const App = () => {
     }
   }, []);
 
+  const addBlog = (event) => {
+    event.preventDefault();
+    const blogObject = {
+      title: newTitle,
+      author: newAuthor,
+      url: newUrl,
+    };
+
+    blogService.create(blogObject).then((returnedBlog) => {
+      setBlogs(blogs.concat(returnedBlog));
+      setNewTitle("");
+      setNewAuthor("");
+      setNewUrl("");
+      setNotificationStatus(true);
+      setNotificationMessage(`A new Blog ${newTitle} by ${newAuthor} added`);
+      setTimeout(() => {
+        setNotificationMessage(null);
+      }, 5000);
+    });
+  };
+
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
@@ -32,23 +59,35 @@ const App = () => {
       blogService.setToken(user.token);
       window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user));
       setUser(user);
+      setNotificationStatus(true);
+      setNotificationMessage(`${user.name} Logged in`);
+      setTimeout(() => {
+        setNotificationMessage(null);
+      }, 5000);
       console.log(user);
       setUsername("");
       setPassword("");
     } catch (exception) {
       console.log("Wrong credentials");
-      // setTimeout(() => {
-      //   setErrorMessage(null)
-      // }, 5000)
+      setNotificationStatus(false);
+      setNotificationMessage("Wrong Username or password");
+      setTimeout(() => {
+        setNotificationMessage(null);
+      }, 5000);
     }
     console.log("logging in with", username, password);
   };
 
   const handleLogout = async () => {
     await window.localStorage.removeItem("loggedBlogappUser");
+    setNotificationStatus(true);
+    setNotificationMessage(`${user.name} Logged out`);
     await setUser(null);
-    user === null ? console.log(user) : console.log("user");
+    setTimeout(() => {
+      setNotificationMessage(null);
+    }, 5000);
   };
+
   const loginForm = () => {
     return (
       <form onSubmit={handleLogin}>
@@ -78,26 +117,26 @@ const App = () => {
     return (
       <div>
         <h2>Create New</h2>
-        <form>
+        <form onSubmit={addBlog}>
           <div>
             title:
             <input
-            // value={newBlog}
-            // onChange={handleBlogChange} onSubmit={addBlog}
+              value={newTitle}
+              onChange={({ target }) => setNewTitle(target.value)}
             />
           </div>
           <div>
             author:
             <input
-            // value={newBlog}
-            // onChange={handleBlogChange}
+              value={newAuthor}
+              onChange={({ target }) => setNewAuthor(target.value)}
             />
           </div>
           <div>
             url:
             <input
-            // value={newBlog}
-            // onChange={handleBlogChange} }
+              value={newUrl}
+              onChange={({ target }) => setNewUrl(target.value)}
             />
           </div>
           <button type="submit">save</button>
@@ -108,6 +147,12 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      {notificationMessage === null ? null : (
+        <Notification
+          message={notificationMessage}
+          status={notificationStatus}
+        />
+      )}
       {user ? (
         <div>
           <p>
