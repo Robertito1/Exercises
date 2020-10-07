@@ -3,14 +3,13 @@ import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Notification from "./components/notification/Notification";
+import BlogForm from "./components/BlogForm";
+import Toggleable from "./components/Toggleable";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [newTitle, setNewTitle] = useState("");
-  const [newAuthor, setNewAuthor] = useState("");
-  const [newUrl, setNewUrl] = useState("");
   const [user, setUser] = useState(null);
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [notificationStatus, setNotificationStatus] = useState(true);
@@ -28,21 +27,13 @@ const App = () => {
     }
   }, []);
 
-  const addBlog = (event) => {
-    event.preventDefault();
-    const blogObject = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl,
-    };
-
+  const addBlog = (blogObject) => {
     blogService.create(blogObject).then((returnedBlog) => {
       setBlogs(blogs.concat(returnedBlog));
-      setNewTitle("");
-      setNewAuthor("");
-      setNewUrl("");
       setNotificationStatus(true);
-      setNotificationMessage(`A new Blog ${newTitle} by ${newAuthor} added`);
+      setNotificationMessage(
+        `A new Blog ${blogObject.title} by ${blogObject.author} added`
+      );
       setTimeout(() => {
         setNotificationMessage(null);
       }, 5000);
@@ -115,33 +106,9 @@ const App = () => {
   };
   const blogForm = () => {
     return (
-      <div>
-        <h2>Create New</h2>
-        <form onSubmit={addBlog}>
-          <div>
-            title:
-            <input
-              value={newTitle}
-              onChange={({ target }) => setNewTitle(target.value)}
-            />
-          </div>
-          <div>
-            author:
-            <input
-              value={newAuthor}
-              onChange={({ target }) => setNewAuthor(target.value)}
-            />
-          </div>
-          <div>
-            url:
-            <input
-              value={newUrl}
-              onChange={({ target }) => setNewUrl(target.value)}
-            />
-          </div>
-          <button type="submit">save</button>
-        </form>
-      </div>
+      <Toggleable buttonLabel="new note">
+        <BlogForm createBlog={addBlog} />
+      </Toggleable>
     );
   };
   return (
