@@ -16,10 +16,12 @@ const Blog = ({ blog }) => {
   };
   const addLike = async () => {
     try {
-      const blogToUpdate = { ...blog, likes: blog.likes + 1 };
-      // await blogService.update({
-      //   blogToUpdate,
-      // });
+      const blogToUpdate = { ...blog, likes: likes + 1 };
+      await blogService.update({
+        blogToUpdate,
+      });
+
+      setLikes(likes + 1);
       console.log(blogToUpdate);
     } catch {}
   };
@@ -35,7 +37,7 @@ const Blog = ({ blog }) => {
           </p>
           <p>{blog.url}</p>
           <p>
-            {blog.likes}
+            {likes}
             <span>
               <button onClick={() => addLike()}>like</button>
             </span>
