@@ -1,31 +1,31 @@
-import React, { useState } from "react";
-import blogService from "../services/blogs";
-import PropTypes from "prop-types";
+import React, { useState } from 'react'
+import blogService from '../services/blogs'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, handleDelete, user }) => {
-  const [expand, setExpand] = useState(false);
-  const [likes, setLikes] = useState(blog.likes);
+  const [expand, setExpand] = useState(false)
+  const [likes, setLikes] = useState(blog.likes)
 
-  let action = expand ? "collapse" : "expand";
+  let action = expand ? 'collapse' : 'expand'
 
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
   const addLike = async () => {
     try {
-      const blogToUpdate = { ...blog, likes: likes + 1 };
-      const id = blog.id;
-      await blogService.update(blogToUpdate, id);
-      setLikes(likes + 1);
-      console.log(blogToUpdate, id);
+      const blogToUpdate = { ...blog, likes: likes + 1 }
+      const id = blog.id
+      await blogService.update(blogToUpdate, id)
+      setLikes(likes + 1)
+      console.log(blogToUpdate, id)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   return (
     <div style={blogStyle}>
@@ -48,16 +48,16 @@ const Blog = ({ blog, handleDelete, user }) => {
           {user.name === blog.user.name ? (
             <button
               style={{
-                backgroundColor: "blue",
-                border: "none",
-                borderRadius: "5px",
+                backgroundColor: 'blue',
+                border: 'none',
+                borderRadius: '5px',
               }}
               onClick={() => handleDelete(blog)}
             >
               delete
             </button>
           ) : (
-            ""
+            ''
           )}
         </div>
       ) : (
@@ -69,12 +69,12 @@ const Blog = ({ blog, handleDelete, user }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   handleDelete: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-};
+}
 
-export default Blog;
+export default Blog
