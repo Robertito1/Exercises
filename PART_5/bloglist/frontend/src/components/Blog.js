@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import blogService from "../services/blogs";
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, handleDelete, user }) => {
   const [expand, setExpand] = useState(false);
   const [likes, setLikes] = useState(blog.likes);
 
@@ -17,14 +17,15 @@ const Blog = ({ blog }) => {
   const addLike = async () => {
     try {
       const blogToUpdate = { ...blog, likes: likes + 1 };
-      await blogService.update({
-        blogToUpdate,
-      });
-
+      const id = blog.id;
+      await blogService.update(blogToUpdate, id);
       setLikes(likes + 1);
-      console.log(blogToUpdate);
-    } catch {}
+      console.log(blogToUpdate, id);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   return (
     <div style={blogStyle}>
       {expand ? (
@@ -43,6 +44,20 @@ const Blog = ({ blog }) => {
             </span>
           </p>
           <p>{blog.user.name}</p>
+          {user.name === blog.user.name ? (
+            <button
+              style={{
+                backgroundColor: "blue",
+                border: "none",
+                borderRadius: "5px",
+              }}
+              onClick={() => handleDelete(blog)}
+            >
+              delete
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       ) : (
         <div>

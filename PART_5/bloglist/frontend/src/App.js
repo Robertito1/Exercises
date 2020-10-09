@@ -15,7 +15,11 @@ const App = () => {
   const [notificationStatus, setNotificationStatus] = useState(true);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService
+      .getAll()
+      .then((blogs) => blogs.sort((a, b) => a.likes - b.likes))
+      .then((blogs) => blogs.reverse())
+      .then((blogs) => setBlogs(blogs));
   }, []);
 
   useEffect(() => {
@@ -39,6 +43,20 @@ const App = () => {
         setNotificationMessage(null);
       }, 5000);
     });
+  };
+
+  const handleDeleteOf = (blog) => {
+    const idOfDeletedBlog = blog.id;
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}? `)) {
+      blogService.discard(idOfDeletedBlog).then(() => {
+        setBlogs(blogs.filter((blog) => blog.id !== idOfDeletedBlog));
+        setNotificationStatus(true);
+        setNotificationMessage(`${blog.title} by ${blog.author} was deleted`);
+        setTimeout(() => {
+          setNotificationMessage(null);
+        }, 5000);
+      });
+    }
   };
 
   const handleLogin = async (event) => {
@@ -134,7 +152,12 @@ const App = () => {
           </p>
           {blogForm()}
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog
+              key={blog.id}
+              blog={blog}
+              handleDelete={handleDeleteOf}
+              user={user}
+            />
           ))}
         </div>
       ) : (
