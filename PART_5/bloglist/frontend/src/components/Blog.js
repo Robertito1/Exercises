@@ -41,7 +41,9 @@ const Blog = ({ blog, handleDelete, user }) => {
           <p>
             {likes}
             <span>
-              <button onClick={() => addLike()}>like</button>
+              <button onClick={() => addLike()} id="like">
+                like
+              </button>
             </span>
           </p>
           <p>{blog.user.name}</p>
@@ -53,6 +55,7 @@ const Blog = ({ blog, handleDelete, user }) => {
                 borderRadius: "5px",
               }}
               onClick={() => handleDelete(blog)}
+              id="delete"
             >
               delete
             </button>
@@ -64,7 +67,9 @@ const Blog = ({ blog, handleDelete, user }) => {
         <div>
           {blog.title} {blog.author}
           <span>
-            <button onClick={() => setExpand(!expand)}>{action}</button>
+            <button id="expand" onClick={() => setExpand(!expand)}>
+              {action}
+            </button>
           </span>
         </div>
       )}
