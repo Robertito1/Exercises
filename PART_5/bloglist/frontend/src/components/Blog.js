@@ -28,7 +28,7 @@ const Blog = ({ blog, handleDelete, user }) => {
   };
 
   return (
-    <div style={blogStyle} className="blog">
+    <li style={blogStyle} className="blog">
       {expand ? (
         <div>
           <p>
@@ -38,7 +38,7 @@ const Blog = ({ blog, handleDelete, user }) => {
             </span>
           </p>
           <p>{blog.url}</p>
-          <p>
+          <p id="likes">
             {likes}
             <span>
               <button onClick={() => addLike()} id="like">
@@ -73,7 +73,7 @@ const Blog = ({ blog, handleDelete, user }) => {
           </span>
         </div>
       )}
-    </div>
+    </li>
   );
 };
 Blog.propTypes = {

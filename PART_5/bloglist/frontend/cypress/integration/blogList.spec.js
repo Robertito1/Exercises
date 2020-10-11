@@ -1,3 +1,5 @@
+const { array } = require("prop-types");
+
 describe("Blog App", function () {
   beforeEach(function () {
     cy.request("POST", "http://localhost:3001/api/testing/reset");
@@ -60,6 +62,13 @@ describe("Blog App", function () {
       it("a blog can be deleted by the creator", function () {
         cy.get("#delete").click();
         cy.get("#blogs").should("not.contain", "You'll never walk alone");
+      });
+      it("blogs are displayed according to likes", function () {
+        cy.get("#likes").then((e) => {
+        for(i = 0;i <= array.length; i++){
+                 e
+        }
+        });
       });
     });
   });

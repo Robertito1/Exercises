@@ -5,11 +5,10 @@ import loginService from "./services/login";
 import Notification from "./components/notification/Notification";
 import BlogForm from "./components/BlogForm";
 import Toggleable from "./components/Toggleable";
+import Login from "./components/Login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
   const [notificationMessage, setNotificationMessage] = useState(null);
   const [notificationStatus, setNotificationStatus] = useState(true);
@@ -59,8 +58,7 @@ const App = () => {
     }
   };
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({
         username,
@@ -75,8 +73,6 @@ const App = () => {
         setNotificationMessage(null);
       }, 5000);
       console.log(user);
-      setUsername("");
-      setPassword("");
     } catch (exception) {
       console.log("Wrong credentials");
       setNotificationStatus(false);
@@ -99,33 +95,7 @@ const App = () => {
   };
 
   const loginForm = () => {
-    return (
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-            id="username"
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-            id="password"
-          />
-        </div>
-        <button type="submit" id="login-button">
-          login
-        </button>
-      </form>
-    );
+    return <Login handleLogin={handleLogin} />;
   };
 
   const blogFormRef = useRef();
@@ -155,14 +125,16 @@ const App = () => {
             </span>
           </p>
           {blogForm()}
-          {blogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              handleDelete={handleDeleteOf}
-              user={user}
-            />
-          ))}
+          <ul id="blogList">
+            {blogs.map((blog) => (
+              <Blog
+                key={blog.id}
+                blog={blog}
+                handleDelete={handleDeleteOf}
+                user={user}
+              />
+            ))}
+          </ul>
         </div>
       ) : (
         loginForm()
