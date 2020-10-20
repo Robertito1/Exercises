@@ -13,4 +13,5 @@
 /PART_5/bloglist/backend/node_modules
 /PART_5/bloglist/backend/.env
 /PART_6/unicafeRedux/node_modules
+/PART_6/redux-anecdotes/node_modules
 notes.md
