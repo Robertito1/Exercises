@@ -1,23 +1,25 @@
 
-
-const anecdotesAtStart = [
-    'If it hurts, do it more often',
-    'Adding manpower to a late software project makes it later!',
-    'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-    'Premature optimization is the root of all evil.',
-    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-  ]
-
-  const initialState = anecdotesAtStart
-const reducer = (state = initialState, action) => {
-    console.log('state now: ', state)
-    console.log('action', action)
-     switch (action.type) {
-    //   case 'VOTE': 
-    //   const id = action.data.id
-    //   const anecdoteToVote = state.find(e => e.id === id)
-    //     return state.map(e => e.id !== id ? e : {...anecdoteToVote, votes: anecdoteToVote.votes + 1} )
-      default: return state
-    }
+const notificationReducer = (state = '', action) => {
+  switch (action.type) {
+    case 'SET_NOTIFICATION':
+      return state = action.data
+      case 'CLEAR_NOTIFICATION':
+       return state = ''
+    default:
+      return state
   }
+}
+
+export const notificationSet = (notification) => {
+  return {
+    type: 'SET_NOTIFICATION',
+    data:  notification,
+  }
+}
+
+export const notificationClear = () => {
+  return {
+    type: 'CLEAR_NOTIFICATION',
+  }
+}
+export default notificationReducer
