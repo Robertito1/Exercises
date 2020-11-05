@@ -1,6 +1,6 @@
 import React from 'react'
 import {addVoteTo} from "../reducers/anecdoteReducer"
-import {notificationSet, notificationClear} from '../reducers/notificationReducer'
+import {notificationSet} from '../reducers/notificationReducer'
 import { useSelector, useDispatch } from 'react-redux'
 
 const AnecdoteList = () => {
@@ -11,12 +11,10 @@ const AnecdoteList = () => {
     .reverse()
  const dispatch = useDispatch()
 
-
  const vote = (id) => {
   const anecdote = anecdotes.find(e => e.id === id)
     dispatch(addVoteTo(anecdote))
-    dispatch(notificationSet(`you voted '${anecdote.content}'`))
-    setTimeout(()=> dispatch(notificationClear()), 5000)
+    dispatch(notificationSet(`you voted '${anecdote.content}'`, 5))
   }
 
     return ( <div>
