@@ -47,18 +47,23 @@
     },
     {
       "content": "test",
-      "votes": 2,
+      "votes": 6,
       "id": "ef94Cxa"
     },
     {
       "content": "tito",
-      "votes": 2,
+      "votes": 5,
       "id": "ZXb2zfh"
     },
     {
       "content": "create",
-      "votes": 11,
+      "votes": 15,
       "id": "A_z1UEG"
+    },
+    {
+      "content": "created now",
+      "votes": 5,
+      "id": "W6DWQbJ"
     }
   ]
 }
