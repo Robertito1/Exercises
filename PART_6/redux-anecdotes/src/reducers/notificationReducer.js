@@ -10,17 +10,23 @@ const notificationReducer = (state = '', action) => {
 }
 
 
-
+let clear             
 export const notificationSet = (notification, duration) => {
   return async dispatch => {
-       await dispatch({type: 'SET_NOTIFICATION',
-                  data: notification
-                })  
-     await setTimeout(() =>dispatch({
-      type: 'CLEAR_NOTIFICATION',
-         }), duration * 1000 )
+    if(clear){
+      clearTimeout(clear)
+      console.log('clearing')
+    }
+    await dispatch({type: 'SET_NOTIFICATION',
+    data: notification
+})
+    clear = await setTimeout(() =>{  
+      dispatch({
+        type: 'CLEAR_NOTIFICATION',
+           })
+     }, duration * 1000 )
+       
        }
       }
-
 
 export default notificationReducer

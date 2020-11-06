@@ -2,8 +2,6 @@ import anecdoteService from '../services/anecdotes'
 
 
 const reducer = (state = [], action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
   switch (action.type) {
     case 'VOTE': 
       const votedAnecdote = action.data
@@ -12,10 +10,6 @@ const reducer = (state = [], action) => {
       return [...state, action.data]
       case 'INIT_ANECDOTES':
       return action.data
-    // case 'BAD':
-    //   return {...state , bad:state.bad + 1}
-    // case 'ZERO':
-    //   return initialState
     default: return state
   }
 }
