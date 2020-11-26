@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import {notificationSet} from '../reducers/notificationReducer'
+import {deleteBlog, likeBlog} from '../reducers/blogsReducer'
 
-const Blog = ({ blog, handleDelete, user }) => {
+
+const Blog = ({ blog, user }) => {
   const [expand, setExpand] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
+
+  const dispatch = useDispatch()
 
   let action = expand ? 'collapse' : 'expand'
 
@@ -16,13 +20,23 @@ const Blog = ({ blog, handleDelete, user }) => {
     marginBottom: 5,
   }
   const addLike = async () => {
-    try {
-      const blogToUpdate = { ...blog, likes: likes + 1 }
-      const id = blog.id
-      await blogService.update(blogToUpdate, id)
-      setLikes(likes + 1)
-    } catch (error) {
-      console.log(error)
+    try{
+      await dispatch(likeBlog(blog))
+      dispatch(notificationSet(`you liked ${blog.title} by ${blog.author}`, true))
+   }catch (err){
+      console.log(err)
+   } 
+  }
+
+  
+  const handleDelete = async (blog) => {
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}? `)) {
+      try{
+         await dispatch(deleteBlog(blog.id))
+        dispatch(notificationSet(`${blog.title} by ${blog.author} was deleted`, true))
+      }catch (err){
+         console.log(err)
+      }  
     }
   }
 
@@ -38,8 +52,7 @@ const Blog = ({ blog, handleDelete, user }) => {
           </p>
           <p>{blog.url}</p>
           <p id="likes">
-            {likes}
-
+            {blog.likes}
           </p><span>
             <button onClick={() => addLike()} id="like">
                 like
@@ -77,7 +90,6 @@ const Blog = ({ blog, handleDelete, user }) => {
 }
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  handleDelete: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 }
 
