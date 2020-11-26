@@ -82,7 +82,14 @@ const CreateNew = (props) => {
   const author = useField('text')
   const info = useField('text')
 
+  function withoutReset(thing) {
+    const {reset, ...others} = thing
+   return others
+  }
   
+  const otherContentProps = withoutReset(content);
+  const otherAuthorProps = withoutReset(author)
+  const otherInfoProps = withoutReset(info)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -108,28 +115,19 @@ const CreateNew = (props) => {
         <div>
           content
           <input name='content'
-              value={content.value}  
-              type={content.type}
-              onChange={content.onChange}
-              reset={content.reset}
+              {...otherContentProps}
           />
         </div>
         <div>
           author
           <input name='author' 
-              value={author.value}  
-              type={author.type}
-              onChange={author.onChange}
-              reset={author.reset}
+             {...otherAuthorProps}
            />
         </div>
         <div>
           url for more info
           <input name='info' 
-              value={info.value}  
-              type={info.type}
-              onChange={info.onChange}
-              reset={info.reset}
+              {...otherInfoProps}
           />
         </div>
         <button  onClick={handleSubmit}>create</button>

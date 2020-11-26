@@ -15,4 +15,8 @@
 /PART_6/unicafeRedux/node_modules
 /PART_6/redux-anecdotes/node_modules
 /PART_7/routed-anecdotes/node_modules
+/PART_7/bloglist-extended/backend/node_modules
+/PART_7/bloglist-extended/frontend/node_modules
+/PART_7/country-hook/node_modules
+/PART_7/ultimate-hooks/node_modules
 notes.md
