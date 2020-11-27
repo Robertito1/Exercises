@@ -3,8 +3,7 @@ import Notification from './components/notification/Notification'
 import Login from './components/Login'
 import Navbar from './components/navbar/navbar'
 import { useDispatch, useSelector } from 'react-redux'
-import { notificationSet} from './reducers/notificationReducer'
-import {initializeUser, setUser} from './reducers/userReducer'
+import {initializeUser} from './reducers/userReducer'
 import BlogList from './components/Bloglist'
 import {Switch , Route} from 'react-router-dom'
 import UsersPage from './pages/users'
@@ -21,22 +20,10 @@ const App = () => {
     dispatch(initializeUser())
   }, [dispatch])
 
-  const handleLogin = async (username, password) => {
-    try {
-     await dispatch(setUser({username, password}))
-     await dispatch(notificationSet(` Logged in`, true))
-    } catch (exception) {
-      dispatch(notificationSet('Wrong Username or password', false))
-    }
-  }
-
-  const loginForm = () => {
-    return <Login handleLogin={handleLogin} />
-  }
 
   return (
     <div>
-      <h2>blogs</h2>
+      <h2 className='text-warning w-100 bg-secondary m-0 p-4 pt-0 pb-0'>blogs</h2>
         <Notification />
      {user?
      <div>
@@ -48,7 +35,7 @@ const App = () => {
         <Route path='/blogs/:id' render={()=> <BlogPage />} />
       </Switch>
      </div>
-      : loginForm()}
+      : <Login />}
     </div>
   )
 }

@@ -14,20 +14,20 @@ const Navbar = ({name}) => {
       }
 
     return ( 
-        <div>
+        <div className='d-flex w-100 bg-secondary justify-content-around text-white pb-4 mb-4'>
         <span>
-            <Link to='/'>
-                blogs
+            <Link to='/' className='text-white'>
+                Blogs
             </Link>
         </span>
         <span>
-            <Link to='/users'>
-                users
+            <Link to='/users' className='text-white'>
+                Users
             </Link>
         </span>
             {name} logged-in
             <span>
-              <button onClick={handleLogout}>logout</button>
+              <button onClick={handleLogout} className='btn btn-primary text-white'>logout</button>
             </span> 
         </div>
      );

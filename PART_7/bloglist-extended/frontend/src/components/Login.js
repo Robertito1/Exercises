@@ -1,36 +1,32 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { notificationSet} from '../reducers/notificationReducer'
+import { setUser} from '../reducers/userReducer'
 
-const Login = ({ handleLogin }) => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+const Login = () => {
+ 
+  const dispatch = useDispatch()
 
-  const raiseLoginEvent = (e) => {
+  const handleLogin = async (e ) => {
     e.preventDefault()
-    handleLogin(username, password)
-    setUsername('')
-    setPassword('')
+    console.log('called')
+
+    try {
+     await dispatch(setUser({username:e.target.username.value, password: e.target.password.value}))
+     await dispatch(notificationSet(` Logged in`, true))
+    } catch (exception) {
+      dispatch(notificationSet('Wrong Username or password', false))
+    }
   }
   return (
-    <form onSubmit={raiseLoginEvent}>
+    <form onSubmit={handleLogin}>
       <div>
         username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-          id="username"
-        />
+        <input name="username"/>
       </div>
       <div>
         password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-          id="password"
-        />
+        <input name="password" />
       </div>
       <button type="submit" id="login-button">
         login

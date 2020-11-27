@@ -35,9 +35,9 @@ const BlogPage = () => {
          }
          e.target.comment.value = ''
         await dispatch(dispatchComment(blog.id, comment))
-
+        dispatch(notificationSet(`you added a comment to ${blog.title}`, true))
         }catch(err){
-          console.log(err)
+          dispatch(notificationSet(`Could not complete your request try again`, false))
         }
       }
 
@@ -53,7 +53,6 @@ const BlogPage = () => {
           }  
         }
       }
-
     const blogById = (id) =>
     blogs.find(a => a.id === id)
     const blog = match 
@@ -63,14 +62,16 @@ const BlogPage = () => {
        if (!blog) {
       return null
     }
+    console.log(blog.comments)
+
     return ( 
-        <div>
+        <div className='ml-3'>
             <h2>{blog.title}</h2>
             <a href={blog.url}>{blog.url}</a>
             <p>
                 {blog.likes} likes 
                 <span>
-                 <button onClick={()=>addLike()}>like</button>
+                 <button onClick={()=>addLike()} className='btn btn-success mb-3 ml-4'><i className="fas fa-thumbs-up"></i></button>
                 </span>
             </p>
             <p>added by <b>{blog.author}</b></p>
@@ -87,12 +88,12 @@ const BlogPage = () => {
            <h3>Comments</h3>
               <form onSubmit={addComment} id="form">
                   <input name="comment"/>
-                <button type="submit" id="save">
+                <button type="submit" id="save" className='btn btn-secondary'>
                   save
                 </button>
               </form>
            <ul>
-             {blog.comments.map(e => <li key={e.id}>{e.content}</li>)}
+             {blog.comments.map(e => <li key={e.content}>{e.content}</li>)}
            </ul>
         </div>
      );

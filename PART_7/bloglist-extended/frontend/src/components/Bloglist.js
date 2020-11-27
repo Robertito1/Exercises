@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-// import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Toggleable from './Toggleable'
 import { useDispatch, useSelector } from 'react-redux'
@@ -54,7 +53,7 @@ const BlogList = () => {
         {blogForm()}
         <div id="blogList">
           {blogs.map((blog) => (
-            <p key={blog.id} style={blogStyle}><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></p>
+            <p key={blog.id} style={blogStyle} className='text-center mx-3'><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></p>
           ))}
         </div>
       </div>

@@ -17,17 +17,17 @@ const BlogForm = ({ createBlog }) => {
   return (
     <div>
       <h2>Create New</h2>
-      <form onSubmit={addBlog} id="form">
+      <form onSubmit={addBlog} id="form" className='ml-3'>
         <div>
-          title: <input name="title"/>
+          title: <input name="title" className='mb-2'/>
         </div>
         <div>
-          author: <input name="author"/>
+          author: <input name="author" className='mb-2'/>
         </div>
         <div>
-            url: <input name="url"/>
+            url: <input name="url" className='mb-2'/>
         </div>
-        <button type="submit" id="save">
+        <button type="submit" id="save" className='btn btn-success mb-3'>
           save
         </button>
       </form>

@@ -25,7 +25,7 @@ const UserPage = () => {
     return null
   }
     return ( 
-             <div>
+             <div className='ml-3'>
                 <h1>{user.name}</h1> 
                 <h2>Added blogs</h2>
                 <ul>{user.blogs.map(e => <li key={e.title}>{e.title}</li>)}</ul>

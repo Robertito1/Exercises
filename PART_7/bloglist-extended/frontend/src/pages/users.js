@@ -16,7 +16,7 @@ const UsersPage = () => {
           if (!users){
             return null
           }else{
-            return <div>
+            return <div className='ml-3'>
                     <h3>Users</h3>
                       <table>
                          <thead>
