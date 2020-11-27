@@ -6,7 +6,7 @@ import {deleteBlog, likeBlog} from '../reducers/blogsReducer'
 
 
 const Blog = ({ blog, user }) => {
-  const [expand, setExpand] = useState(false)
+  // const [expand, setExpand] = useState(false)
 
   const dispatch = useDispatch()
 

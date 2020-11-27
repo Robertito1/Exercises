@@ -9,6 +9,7 @@ import BlogList from './components/Bloglist'
 import {Switch , Route} from 'react-router-dom'
 import UsersPage from './pages/users'
 import UserPage from './pages/userPage'
+import BlogPage from './pages/blogPage'
 
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
         <Route exact path="/" render={() => <BlogList/>} />
         <Route exact path="/users" render={() => <UsersPage/>} />
         <Route path= '/users/:id' render={()=> <UserPage />} />
+        <Route path='/blogs/:id' render={()=> <BlogPage />} />
       </Switch>
      </div>
       : loginForm()}

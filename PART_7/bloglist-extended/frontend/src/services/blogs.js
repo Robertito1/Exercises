@@ -34,9 +34,16 @@ const discard = async (id) => {
   const config = {
     headers: { Authorization: token },
   }
-
   const response = await axios.delete(`${baseUrl}/${id}`, config)
   return response.data
 }
 
-export default { getAll, create, setToken, update, discard }
+const newComment = async (id, content) => {
+  const config = {
+    headers: { Authorization: token}
+  }
+  const response = await axios.post(`${baseUrl}/${id}/comments`, content, config)
+  return response.data
+}
+
+export default { getAll, create, setToken, update, discard , newComment}

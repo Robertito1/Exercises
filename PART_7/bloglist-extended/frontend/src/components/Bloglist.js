@@ -1,16 +1,25 @@
 import React, { useEffect, useRef } from 'react'
-import Blog from './Blog'
+// import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Toggleable from './Toggleable'
 import { useDispatch, useSelector } from 'react-redux'
 import { notificationSet} from '../reducers/notificationReducer'
 import {initializeBlogs, createBlog} from '../reducers/blogsReducer'
+import { Link } from 'react-router-dom'
 
 
 const BlogList = () => {
 
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5,
+  }
+
     const dispatch = useDispatch()
-    const user = useSelector(state => state.user)
+    // const user = useSelector(state => state.user)
 
     const blogs = useSelector(state => state.blogs)   
     .sort((a, b) => a.likes - b.likes)
@@ -43,17 +52,13 @@ const BlogList = () => {
     return ( 
         <div id="blogs">
         {blogForm()}
-        <ul id="blogList">
+        <div id="blogList">
           {blogs.map((blog) => (
-            <Blog
-              key={blog.id}
-              blog={blog}
-              user={user}
-            />
+            <p key={blog.id} style={blogStyle}><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></p>
           ))}
-        </ul>
+        </div>
       </div>
      );
 }
- 
+
 export default BlogList;
