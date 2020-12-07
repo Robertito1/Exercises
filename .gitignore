@@ -21,4 +21,5 @@
 /PART_7/ultimate-hooks/node_modules
 /PART_8/library-backend/node_modules
 /PART_8/library-frontend/node_modules
+/PART_8/library-backend/.env
 notes.md
