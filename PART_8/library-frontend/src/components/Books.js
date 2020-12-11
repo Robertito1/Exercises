@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState} from 'react'
 import {useQuery} from '@apollo/client'
 import {ALL_BOOKS} from '../queries'
 
@@ -6,6 +6,7 @@ const Books = (props) => {
 
   const [genre, setGenre] = useState('all genres')
   const books = useQuery(ALL_BOOKS)
+   
 
   if (!props.show) {
     return null
@@ -27,11 +28,11 @@ const Books = (props) => {
   return (
     <div>
       <h2>books</h2>  
-        <h3>
+        <p>
           In genre: <span>
-              {genre}
+             <b> {genre}</b>
           </span>
-        </h3>
+        </p>
       <table>
         <tbody>
           <tr>
