@@ -110,12 +110,12 @@ const resolvers = {
     },
     allAuthors: () => Author.find({})
   },
-  Author: {
-    bookCount: async (root) => {
-     const books = await Book.find({author: root.id})
-     return books.length
-    },
-  },
+  // Author: {
+  //   bookCount: async (root) => {
+  //    const books = await Book.find({author: root.id})
+  //    return books.length
+  //   },
+  // },
   Book: {
     author: async (root) => {
       console.log(root)
@@ -131,8 +131,13 @@ const resolvers = {
       if (!currentUser) {
         throw new AuthenticationError("not authenticated")
       }
+      // if (!author) {
+      //   author = new Author({ name: args.author})
+      // }
       if (!author) {
-        author = new Author({ name: args.author})
+        author = new Author({ name: args.author, bookCount: 1})
+      }else {
+        author.bookCount = author.bookCount + 1
       }
       let book = new Book({
         title: args.title,
