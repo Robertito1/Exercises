@@ -52,4 +52,4 @@
      const {calcRating, getFeedback, ...rest} = output
      return rest
   }
-  console.log(calculateExercise([1,1,1,1,1,1,1], 2))
+  console.log(calculateExercise([1,0,2.5,4,0.4,3.1,2], 2))
