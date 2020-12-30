@@ -1,10 +1,10 @@
    export {};
 
-   interface ExerciseValues {
-       days: Array<number>;
-       target: number
-   }
-   interface Result  {
+  //  interface ExerciseValues {
+  //      days: Array<number>;
+  //      target: number
+  //  }
+  export interface Result  {
      totalDays: number;
      trainingDays: number;
      targetAverage: number;
@@ -13,7 +13,7 @@
      rating: number;
      ratingDescription: string;
   }
-    class ResultObject {
+   export class ResultObject {
         totalDays: number;
         trainingDays: number;
         targetAverage: number;
@@ -56,27 +56,27 @@
         }     
     }
 
-    let parseArguments = (args: Array<string>): ExerciseValues => {
-        if (args.length < 4) throw new Error('Not enough arguments');
+    // let parseArguments = (args: Array<string>): ExerciseValues => {
+    //     if (args.length < 4) throw new Error('Not enough arguments');
       
-        if (args.slice(2).find(e => isNaN(Number(e)))) {
-         throw new Error('Provided values were not all numbers!');
-        } else {
-            return {
-                days: args.slice(2, args.length - 1).map(e => Number(e)),
-                target: Number(args[args.length - 1])
-              }
-        }
-      }
+    //     if (args.slice(2).find(e => isNaN(Number(e)))) {
+    //      throw new Error('Provided values were not all numbers!');
+    //     } else {
+    //         return {
+    //             days: args.slice(2, args.length - 1).map(e => Number(e)),
+    //             target: Number(args[args.length - 1])
+    //           }
+    //     }
+    //   }
 
-  let calculateExercise = (data: Array<number>, target: number) : Result => {
+ export let calculateExercise = (data: Array<number>, target: number) : Result => {
    let output =  new ResultObject(data,target)
      const {calcRating, getFeedback, ...rest} = output
      return rest
   }
-  try {
-    const { days, target } = parseArguments(process.argv);
-    console.log(calculateExercise(days, target));
-  } catch (e) {
-    console.log('Error, something bad happened, message: ', e.message);
-  }
+  // try {
+  //   const { days, target } = parseArguments(process.argv);
+  //   console.log(calculateExercise(days, target));
+  // } catch (e) {
+  //   console.log('Error, something bad happened, message: ', e.message);
+  // }
