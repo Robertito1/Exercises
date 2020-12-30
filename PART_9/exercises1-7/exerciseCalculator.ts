@@ -32,7 +32,7 @@
             } 
         }
 
-         getFeedback = (rating: number): string =>{
+         getFeedback = (rating: number): any =>{
             switch(rating){
                case 1: 
                return 'Try harder next week';
@@ -40,7 +40,8 @@
                return 'Good job, there is room for improvement';
                case 3:
                return 'Excellent job! keep it up.';
-            }   
+            }  
+            return 
         }
         constructor(data: Array<number>, target: number){
            this.totalDays = data.length;
