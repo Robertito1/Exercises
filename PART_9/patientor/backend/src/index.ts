@@ -1,5 +1,6 @@
 import express from 'express';
 import diagnosesRouter from './routes/diagonsesRouter';
+import patientsRouter from './routes/patientsRouter';
 import cors from 'cors';
 
 
@@ -8,6 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/diagnoses', diagnosesRouter);
+app.use('/api/patients', patientsRouter);
 app.get('/api/ping', (_req, res) => {
   console.log('someone pinged here');
   res.send('pong');
