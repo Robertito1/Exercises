@@ -1,5 +1,5 @@
 import patientsData from '../../data/patientsData';
-import { Patient, NonSensitivePatientDetails } from '../types';
+import { Patient, NonSensitivePatientDetails, NewPatientEntry } from '../types';
 
 const getEntries = (): Array<Patient> => {
   return patientsData;
@@ -14,12 +14,18 @@ const getNonSensitivePatientDetails = (): NonSensitivePatientDetails [] => {
       occupation
     }));
 };
-const addEntry = (): null => {
-  return null;
+const addPatient = ( entry: NewPatientEntry ): Patient => {
+  const newPatientEntry = {
+    id: String(Math.floor(Math.random() * 1000000)),
+    ...entry
+  };
+
+  patientsData.push(newPatientEntry);
+  return newPatientEntry;
 };
 
 export default {
   getEntries,
   getNonSensitivePatientDetails,
-  addEntry
+  addPatient
 };
