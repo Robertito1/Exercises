@@ -2,6 +2,10 @@ import { State } from "./state";
 import { Patient } from "../types";
 
 export type Action =
+    {
+    type: "UPDATE_PATIENT";
+    payload: Patient;
+    }
   | {
       type: "SET_PATIENT_LIST";
       payload: Patient[];
@@ -24,7 +28,8 @@ export const reducer = (state: State, action: Action): State => {
           ...state.patients
         }
       };
-    case "ADD_PATIENT":
+      case "ADD_PATIENT":
+      case "UPDATE_PATIENT":
       return {
         ...state,
         patients: {
