@@ -4,12 +4,24 @@ import {useParams} from 'react-router-dom'
 import { Patient } from "../types";
 import { useStateValue, updatePatient } from '../state';
 import { apiBaseUrl } from "../constants";
+import { Icon } from 'semantic-ui-react';
 
 
 const PatientPage: React.FC = () => {
 
 const [, dispatch] = useStateValue();
+const [singlePatient, setSinglePatient] = React.useState<Patient | undefined>();
 const { id } = useParams<{ id: string }>();
+
+const selectGenderIcon = (gender: string):'mars' | 'venus' | 'genderless' =>{
+  if(gender === 'male'){
+      return 'mars'
+  }else if (gender === 'female'){
+      return 'venus'
+  }else{
+      return 'genderless'
+  }
+}
   React.useEffect(() => {
     const fetchPatientList = async () => {
       try {
@@ -17,7 +29,8 @@ const { id } = useParams<{ id: string }>();
           `${apiBaseUrl}/patients/${id}`
         );
         console.log(patientFromApi)
-        // dispatch(updatePatient(patientFromApi));
+        setSinglePatient(patientFromApi)
+        dispatch(updatePatient(patientFromApi));
       } catch (e) {
         console.error(e);
       }
@@ -25,7 +38,14 @@ const { id } = useParams<{ id: string }>();
     fetchPatientList();
   }, [dispatch, id]);
    return (
-       <div></div>
+        <> {singlePatient && 
+              (<div>
+                  <h2>{singlePatient.name}  <Icon name={selectGenderIcon(singlePatient.gender)} /></h2>
+                  <p>{singlePatient.ssn}</p>
+                  <p>{singlePatient.occupation}</p>
+              </div>)
+          }
+       </>
    ) 
 };
 
