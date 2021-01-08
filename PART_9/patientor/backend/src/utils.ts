@@ -48,6 +48,12 @@ const parseOccupation = (occupation: any): string =>{
 }
 return occupation;
 };
+const parseEntries = (entries: any): [] => {
+  if(!entries){
+    throw new Error('Incorrect or missing entrie: ' + entries);
+  }
+  return entries;
+};
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 const toNewPatientEntry = (object: any): NewPatientEntry => {
   const newEntry: NewPatientEntry = {
@@ -56,7 +62,7 @@ const toNewPatientEntry = (object: any): NewPatientEntry => {
     ssn: parseSSN(object.ssn),
     gender: parseGender(object.gender),
     occupation: parseOccupation(object.occupation),
-    entries: []
+    entries: parseEntries(object.entries)
   };
   return newEntry;
 };

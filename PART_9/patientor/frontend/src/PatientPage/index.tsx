@@ -1,10 +1,12 @@
 import React from 'react';
 import axios from "axios";
 import {useParams} from 'react-router-dom'
-import { Patient } from "../types";
+import { Icon } from 'semantic-ui-react';
+
+import { Patient} from "../types";
 import { useStateValue, updatePatient } from '../state';
 import { apiBaseUrl } from "../constants";
-import { Icon } from 'semantic-ui-react';
+import EntriesData from "../components/EntriesData";
 
 
 const PatientPage: React.FC = () => {
@@ -22,20 +24,20 @@ const selectGenderIcon = (gender: string):'mars' | 'venus' | 'genderless' =>{
       return 'genderless'
   }
 }
+
   React.useEffect(() => {
-    const fetchPatientList = async () => {
+    const fetchPatient = async () => {
       try {
         const { data: patientFromApi } = await axios.get<Patient>(
           `${apiBaseUrl}/patients/${id}`
         );
-        console.log(patientFromApi)
         setSinglePatient(patientFromApi)
         dispatch(updatePatient(patientFromApi));
       } catch (e) {
         console.error(e);
       }
     };
-    fetchPatientList();
+    fetchPatient();
   }, [dispatch, id]);
    return (
         <> {singlePatient && 
@@ -43,6 +45,8 @@ const selectGenderIcon = (gender: string):'mars' | 'venus' | 'genderless' =>{
                   <h2>{singlePatient.name}  <Icon name={selectGenderIcon(singlePatient.gender)} /></h2>
                   <p>{singlePatient.ssn}</p>
                   <p>{singlePatient.occupation}</p>
+                  <h4>entries</h4>
+                  {singlePatient.entries.map(e => <EntriesData entry={e}/>)}
               </div>)
           }
        </>
