@@ -1,7 +1,7 @@
 import patientsData from '../../data/patientsData';
-import { Patient, NonSensitivePatientDetails, NewPatientEntry } from '../types';
+import { Patient, NonSensitivePatientDetails, NewPatientEntry, Entry } from '../types';
 
-const getEntries = (): Array<Patient> => {
+const getPatients = (): Array<Patient> => {
   return patientsData;
 };
 
@@ -28,9 +28,15 @@ const addPatient = ( entry: NewPatientEntry ): Patient => {
   return newPatientEntry;
 };
 
+const addEntry = (entry: Entry, patient : Patient ): Patient => {
+ patient.entries.push(entry);
+ return patient;
+};
+
 export default {
-  getEntries,
+  getPatients,
   getNonSensitivePatientDetails,
   getSinglePatient,
-  addPatient
+  addPatient,
+  addEntry
 };

@@ -45,7 +45,7 @@ const App: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div className="App" style={{padding: "50px"}}>
       <Router>
         <Container>
           <Header as="h1">Patientor</Header>
