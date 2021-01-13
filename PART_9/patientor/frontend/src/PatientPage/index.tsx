@@ -78,9 +78,9 @@ const submitNewEntry = async (values: EntryFormValues) => {
               </div>)
           }
         <AddEntryModal modalOpen={modalOpen}
-        error={error}
-        onSubmit={submitNewEntry}
-        onClose={closeModal}/>
+            error={error}
+            onSubmit={submitNewEntry}
+            onClose={closeModal}/>
           <Button onClick={() => openModal()}>Add New Entry</Button>
        </>
    ) 
