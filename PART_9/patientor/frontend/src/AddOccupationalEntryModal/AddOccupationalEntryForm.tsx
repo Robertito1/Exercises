@@ -3,18 +3,18 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import * as yup from 'yup';
 
-import { DiagnosisSelection, NumberField, TextField } from '../AddPatientModal/FormField';
+import { DiagnosisSelection, TextField } from '../AddPatientModal/FormField';
 import { useStateValue } from '../state';
-import { HealthCheckEntry } from '../types';
+import { OccupationalHealthcareEntry } from '../types';
 
 
-export type EntryFormValues = Omit<HealthCheckEntry, "id">;
+export type EntryFormValues = Omit<OccupationalHealthcareEntry, "id">;
 
 interface Props {
     onSubmit: (values: EntryFormValues ) => void;
     onCancel: () => void;
   }
-const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
+const AddOccupationalEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     const [{ diagnosis }] = useStateValue()
   
     return (
@@ -23,8 +23,12 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         date: "",
         specialist: "",
         description: "",
-        type: 'HealthCheck',
-        healthCheckRating: 0,
+        type: "OccupationalHealthcare",
+        employerName: "",
+        sickLeave: {
+            startDate: "",
+            endDate: ""
+        },
         diagnosisCodes: []
       }}
       onSubmit={onSubmit}
@@ -37,8 +41,10 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         .required('This Field is required'),
         description: yup.string()
         .required('This Field is required'),
-        healthCheckRating: yup.number().positive().integer().min(0).max(2)
-        .required('This Field is required'),
+        sickLeave: yup.object({
+            startDate: yup.date(),
+            endDate:  yup.string()
+        }),
         diagnosisCodes: yup.array()
       })}
     >
@@ -71,12 +77,23 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               component={TextField}
             />
             <Field
-                label="healthCheckRating"
-                name="healthCheckRating"
-                component={NumberField}
-                min={0}
-                max={3}
-                />
+              label="EmployerName"
+              placeholder="EmployerName"
+              name="employerName"
+              component={TextField}
+            />
+            <Field
+              label="SickLeaveStartDate"
+              placeholder="SickLeaveStartDate"
+              name="sickLeave.startDate"
+              component={TextField}
+            />
+            <Field
+              label="SickLeaveEndDate"
+              placeholder="SickLeaveEndDate"
+              name="sickLeave.endDate"
+              component={TextField}
+            />
             <DiagnosisSelection
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
@@ -95,4 +112,4 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
     );
   };
 
-  export default AddEntryForm;
+  export default AddOccupationalEntryForm;
