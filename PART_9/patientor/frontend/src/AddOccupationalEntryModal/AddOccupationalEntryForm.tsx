@@ -77,20 +77,20 @@ const AddOccupationalEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               component={TextField}
             />
             <Field
-              label="EmployerName"
-              placeholder="EmployerName"
+              label="Employer Name"
+              placeholder="Employer Name"
               name="employerName"
               component={TextField}
             />
             <Field
-              label="SickLeaveStartDate"
-              placeholder="SickLeaveStartDate"
+              label="Sick leave start date"
+              placeholder="Sick leave start date"
               name="sickLeave.startDate"
               component={TextField}
             />
             <Field
-              label="SickLeaveEndDate"
-              placeholder="SickLeaveEndDate"
+              label="Sick leave end date"
+              placeholder="Sick leave end date"
               name="sickLeave.endDate"
               component={TextField}
             />

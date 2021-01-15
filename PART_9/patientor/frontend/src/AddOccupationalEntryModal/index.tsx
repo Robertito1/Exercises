@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AddOccupationalEntryModal = ({ modalOccupationalOpen, onClose,onSubmit,error }: Props) => (
-  <Modal open={modalOccupationalOpen} onClose={onClose} centered={false} closeIcon>
+  <Modal open={modalOccupationalOpen} onClose={onClose} centered={false} closeIcon style={{padding:"20px"}}>
     <Modal.Header>Add a new Occupational Health Care Entry</Modal.Header>
     <Modal.Content>
       {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}

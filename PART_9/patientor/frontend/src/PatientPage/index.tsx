@@ -99,9 +99,9 @@ const submitNewEntry = async (values: EntryFormValues) => {
             error={error}
             onSubmit={submitNewEntry}
             onClose={closeModal} />
-          <Button onClick={() => openHealthModal()}>Add New Health Check Entry</Button>
-          <Button onClick={() => openHospitalModal()}>Add New Hospital Entry</Button>
-          <Button onClick={() => openOccupationalModal()}>Add New Occupational Health Care Entry</Button>
+          <Button onClick={() => openHealthModal()} style={{marginTop:"20px"}}>Add New Health Check Entry</Button>
+          <Button onClick={() => openHospitalModal()} style={{marginTop:"20px"}}>Add New Hospital Entry</Button>
+          <Button onClick={() => openOccupationalModal()} style={{marginTop:"20px"}}>Add New Occupational Health Care Entry</Button>
        </>
    ) 
 };

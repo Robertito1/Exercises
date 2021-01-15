@@ -10,7 +10,7 @@ interface Props {
 }
 
 const AddHospitalEntryModal = ({ modalHospitalOpen, onClose,onSubmit,error }: Props) => (
-  <Modal open={modalHospitalOpen} onClose={onClose} centered={false} closeIcon>
+  <Modal open={modalHospitalOpen} onClose={onClose} centered={false} closeIcon style={{padding:"20px"}}>
     <Modal.Header>Add a new Hospital Entry</Modal.Header>
     <Modal.Content>
       {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
